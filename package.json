@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",
+    "@types/file-saver": "^2.0.7",
     "@types/pdfkit": "^0.13.4",
     "@types/xlsx": "^0.0.36",
     "busboy": "^1.6.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "file-saver": "^2.0.5",
     "formidable": "^3.5.1",
     "framer-motion": "^11.3.31",
     "html2canvas": "^1.4.1",
