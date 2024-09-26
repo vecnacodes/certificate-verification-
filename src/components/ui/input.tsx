@@ -1,12 +1,13 @@
-import * as React from "react"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-import { cn } from "@/lib/utils"
-
+// Define the properties that the Input component will accept, extending from the default HTML input attributes
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
 
+// Create a forwardRef component to handle refs
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className = "", type = "text", ...props }, ref) => {
     return (
       <input
         type={type}
@@ -17,9 +18,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Input.displayName = "Input"
+);
 
-export { Input }
+// Set displayName for better debugging and React DevTools integration
+Input.displayName = "Input";
+
+export { Input };

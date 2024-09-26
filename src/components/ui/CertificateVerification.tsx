@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import React, { useState, useRef } from 'react'
-import { motion } from 'framer-motion'
-import { Search, Download } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { saveAs } from 'file-saver'
+import React, { useState, useRef } from 'react';
+import { motion } from 'framer-motion';
+import { Search, Download } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { saveAs } from 'file-saver';
 
 // Mock student data for 10 students
 const studentData: { [key: string]: Student } = {
@@ -20,7 +20,7 @@ const studentData: { [key: string]: Student } = {
   "44556": { name: "Fiona Wilson", id: "44556", startDate: "2023-08-01", endDate: "2024-02-01", domain: "Blockchain" },
   "77889": { name: "George Taylor", id: "77889", startDate: "2023-09-01", endDate: "2024-03-01", domain: "IoT Development" },
   "10101": { name: "Hannah Anderson", id: "10101", startDate: "2023-10-01", endDate: "2024-04-01", domain: "DevOps" }
-}
+};
 
 interface Student {
   name: string;
@@ -31,69 +31,69 @@ interface Student {
 }
 
 export default function CertificateVerification() {
-  const [searchId, setSearchId] = useState('')
-  const [student, setStudent] = useState<Student | null>(null)
-  const [isSearching, setIsSearching] = useState(false)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [searchId, setSearchId] = useState('');
+  const [student, setStudent] = useState<Student | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const handleSearch = () => {
-    setIsSearching(true)
+    setIsSearching(true);
     // Simulate API call
     setTimeout(() => {
-      const foundStudent = studentData[searchId] || null
-      setStudent(foundStudent)
-      setIsSearching(false)
-    }, 1000)
-  }
+      const foundStudent = studentData[searchId] || null;
+      setStudent(foundStudent);
+      setIsSearching(false);
+    }, 1000);
+  };
 
   const handleDownload = () => {
-    if (!student) return
+    if (!student) return;
 
-    const canvas = canvasRef.current
-    if (!canvas) return
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
     // Set canvas size
-    canvas.width = 800
-    canvas.height = 600
+    canvas.width = 800;
+    canvas.height = 600;
 
     // Draw certificate background
-    ctx.fillStyle = '#f0f0f0'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = '#f0f0f0';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw border
-    ctx.strokeStyle = '#000000'
-    ctx.lineWidth = 10
-    ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20)
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 10;
+    ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
 
     // Draw title
-    ctx.font = 'bold 40px Arial'
-    ctx.fillStyle = '#000000'
-    ctx.textAlign = 'center'
-    ctx.fillText('Certificate of Completion', canvas.width / 2, 80)
+    ctx.font = 'bold 40px Arial';
+    ctx.fillStyle = '#000000';
+    ctx.textAlign = 'center';
+    ctx.fillText('Certificate of Completion', canvas.width / 2, 80);
 
     // Draw student name
-    ctx.font = 'bold 30px Arial'
-    ctx.fillText(student.name, canvas.width / 2, 180)
+    ctx.font = 'bold 30px Arial';
+    ctx.fillText(student.name, canvas.width / 2, 180);
 
     // Draw course details
-    ctx.font = '20px Arial'
-    ctx.fillText(`has successfully completed the course in ${student.domain}`, canvas.width / 2, 240)
-    ctx.fillText(`from ${student.startDate} to ${student.endDate}`, canvas.width / 2, 280)
+    ctx.font = '20px Arial';
+    ctx.fillText(`has successfully completed the course in ${student.domain}`, canvas.width / 2, 240);
+    ctx.fillText(`from ${student.startDate} to ${student.endDate}`, canvas.width / 2, 280);
 
     // Draw ID
-    ctx.font = '16px Arial'
-    ctx.fillText(`Certificate ID: ${student.id}`, canvas.width / 2, 540)
+    ctx.font = '16px Arial';
+    ctx.fillText(`Certificate ID: ${student.id}`, canvas.width / 2, 540);
 
     // Convert canvas to blob and download
     canvas.toBlob((blob) => {
       if (blob) {
-        saveAs(blob, `${student.name.replace(' ', '_')}_Certificate.png`)
+        saveAs(blob, `${student.name.replace(' ', '_')}_Certificate.png`);
       }
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 to-indigo-200 flex items-center justify-center p-4">
@@ -151,5 +151,5 @@ export default function CertificateVerification() {
       </Card>
       <canvas ref={canvasRef} className="hidden" />
     </div>
-  )
+  );
 }

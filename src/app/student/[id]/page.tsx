@@ -1,36 +1,38 @@
-// StudentContext.tsx
 "use client";
-import React, { createContext, useContext, useState } from "react";
 
-type Student = {
-  name: string;
-  id: string;
-  startDate: string;
-  endDate: string;
-  domain: string;
-};
+import React, { useEffect, useState } from "react";
+import { useStudentContext } from "@/components/ui/Studentcontext"; // Adjust the import path as necessary
 
-interface StudentContextProps {
-  students: Student[];
-  setStudents: React.Dispatch<React.SetStateAction<Student[]>>;
-}
+const StudentPage = () => {
+  const { students } = useStudentContext();
+  const [student, setStudent] = useState<any>(null); // Adjust type as needed
+  const [id, setId] = useState<string>(""); // or get ID from URL params
 
-const StudentContext = createContext<StudentContextProps | undefined>(undefined);
+  useEffect(() => {
+    // Assuming you get ID from URL params or other sources
+    const fetchStudent = async () => {
+      // Replace this with your logic to get student data by ID
+      const foundStudent = students.find((s) => s.id === id);
+      setStudent(foundStudent || null);
+    };
 
-export const useStudentContext = () => {
-  const context = useContext(StudentContext);
-  if (!context) {
-    throw new Error("useStudentContext must be used within a StudentProvider");
+    fetchStudent();
+  }, [id, students]);
+
+  if (!student) {
+    return <p>Student not found</p>;
   }
-  return context;
-};
-
-export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [students, setStudents] = useState<Student[]>([]);
 
   return (
-    <StudentContext.Provider value={{ students, setStudents }}>
-      {children}
-    </StudentContext.Provider>
+    <div className="student-details">
+      <h1>Student Details</h1>
+      <p>Name: {student.name}</p>
+      <p>ID: {student.id}</p>
+      <p>Start Date: {student.startDate}</p>
+      <p>End Date: {student.endDate}</p>
+      <p>Domain: {student.domain}</p>
+    </div>
   );
 };
+
+export default StudentPage;

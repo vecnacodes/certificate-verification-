@@ -27,19 +27,18 @@ export default function CertificateVerificationForm() {
 
     try {
       const response = await fetch(`/api/verify?id=${certificateId}`)
-      if (response.ok) {
-        const data = await response.json()
-        setVerificationResult(data)
-      } else {
+      if (!response.ok) {
         const errorData = await response.json()
-        setError(errorData.error || 'Failed to verify certificate')
+        throw new Error(errorData.error || 'Failed to verify certificate')
       }
+      const data = await response.json()
+      setVerificationResult(data)
     } catch (error) {
       console.error('Error verifying certificate:', error)
       setError('An error occurred while verifying the certificate')
+    } finally {
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
   }
 
   const handleDownload = async () => {
@@ -48,19 +47,19 @@ export default function CertificateVerificationForm() {
     try {
       const response = await fetch(`/api/generate-certificate?id=${verificationResult.id}`)
       
-      if (response.ok) {
-        const blob = await response.blob()
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.style.display = 'none'
-        a.href = url
-        a.download = `certificate_${verificationResult.id}.pdf`
-        document.body.appendChild(a)
-        a.click()
-        window.URL.revokeObjectURL(url)
-      } else {
-        setError('Failed to generate certificate')
+      if (!response.ok) {
+        throw new Error('Failed to generate certificate')
       }
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.style.display = 'none'
+      a.href = url
+      a.download = `certificate_${verificationResult.id}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
     } catch (error) {
       console.error('Error generating certificate:', error)
       setError('An error occurred while generating the certificate')

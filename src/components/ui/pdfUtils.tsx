@@ -1,7 +1,8 @@
-// src/components/ui/pdfUtils.ts
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import { Student } from './Student'; // Adjust the path if needed
+import React from 'react';
+import type { Student } from '@/components/ui/Student'; // Adjust the path if needed
 
+// Function to generate and download a PDF certificate
 export const generateAndDownloadPDF = async (student: Student) => {
   if (!student) return;
 
@@ -16,7 +17,7 @@ export const generateAndDownloadPDF = async (student: Student) => {
   const color = rgb(0, 0, 0);
 
   // Add text to the PDF
-  page.drawText(`Certificate of Completion`, {
+  page.drawText('Certificate of Completion', {
     x: 50,
     y: height - 100,
     size: fontSize,
@@ -78,3 +79,18 @@ export const generateAndDownloadPDF = async (student: Student) => {
   // Clean up
   URL.revokeObjectURL(url);
 };
+
+// Example React component using this function
+const PDFGenerator: React.FC<{ student: Student }> = ({ student }) => {
+  const handleDownload = () => {
+    generateAndDownloadPDF(student);
+  };
+
+  return (
+    <button onClick={handleDownload} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+      Download Certificate
+    </button>
+  );
+};
+
+export default PDFGenerator;

@@ -6,10 +6,8 @@ import { Input } from './input';
 import { Card, CardContent, CardHeader, CardTitle } from './card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table';
 import * as XLSX from 'xlsx';
-import { useStudentContext } from './Studentcontext';  // Import the useStudentContext hook
+import { useStudentContext } from '@/components/ui/Studentcontext';
 
-
-// Read Excel file function
 const readExcelFile = (file: File): Promise<Student[]> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -40,7 +38,7 @@ const readExcelFile = (file: File): Promise<Student[]> => {
 };
 
 export default function AdminDashboard() {
-  const { students, setStudents } = useStudentContext();  // Access the global student state
+  const { students, setStudents } = useStudentContext(); 
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -62,7 +60,7 @@ export default function AdminDashboard() {
       const data = await readExcelFile(file);
       console.log('Parsed Excel data:', data);
 
-      // Update the global student state
+      
       setStudents(data);
 
       console.log('Upload successful');
